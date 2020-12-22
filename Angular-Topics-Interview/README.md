@@ -90,7 +90,7 @@ The string `'Lydia'` is a truthy value. What we're actually asking, is "is this 
 
 ---
 
-###### 5. Which one is true?
+###### 5. Which one is true????
 
 ```javascript
 const bird = {
@@ -126,7 +126,7 @@ However, with dot notation, this doesn't happen. `mouse` does not have a key cal
 
 ---
 
-###### 6. What's the output?
+###### 6. What's the output???
 
 ```javascript
 let c = { greeting: 'Hey!' };
@@ -161,7 +161,7 @@ When you change one object, you change all of them.
 
 ---
 
-###### 7. What's the output?
+###### 7. What's the output??
 
 ```javascript
 let a = 3;
