@@ -77,7 +77,7 @@ However, with dot notation, this doesn't happen. `mouse` does not have a key cal
 
 ---
 
-###### 6. What's the output?
+###### 6. What's the output====
 
 ```javascript
 let c = { greeting: 'Hey!' };
@@ -112,7 +112,7 @@ When you change one object, you change all of them.
 
 ---
 
-###### 7. What's the output?
+###### 7. What's the output9999999
 
 ```javascript
 let a = 3;
@@ -145,7 +145,7 @@ However, when we use the `===` operator, both value _and_ type should be the sam
 
 ---
 
-###### 8. What's the output?
+###### 8. What's the output,,,,
 
 ```javascript
 class Chameleon {
