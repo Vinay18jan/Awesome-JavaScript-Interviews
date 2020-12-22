@@ -1,16 +1,23 @@
 ---
 
-###### 1. What's the output?
+###### 1. What is reactjs
 
 ```javascript
-function sayHi() {
-  console.log(name);
-  console.log(age);
-  var name = 'Lydia';
-  let age = 21;
-}
+class MyComponent extends React.Component {
+  // when the component is added to the DOM...
+  componentDidMount() {
+    window.addEventListener('resize', this.onResizeHandler);
+  }
 
-sayHi();
+  // when the component is removed from the DOM...
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResizeHandler);
+  }
+
+  onResizeHandler() {
+    console.log('The window has been resized!');
+  }
+}
 ```
 
 - A: `Lydia` and `undefined`
@@ -35,12 +42,11 @@ Variables with the `let` keyword (and `const`) are hoisted, but unlike `var`, do
 ###### 2. What's the output?
 
 ```javascript
-for (var i = 0; i < 3; i++) {
-  setTimeout(() => console.log(i), 1);
-}
-
-for (let i = 0; i < 3; i++) {
-  setTimeout(() => console.log(i), 1);
+class MyComponent extends React.Component {
+  // only re-render if the ID has changed!
+  shouldComponentUpdate(nextProps, nextState) {
+    return nextProps.id === this.props.id;
+  }
 }
 ```
 
@@ -65,16 +71,18 @@ In the second loop, the variable `i` was declared using the `let` keyword: varia
 ###### 3. What's the output?
 
 ```javascript
-const shape = {
-  radius: 10,
-  diameter() {
-    return this.radius * 2;
-  },
-  perimeter: () => 2 * Math.PI * this.radius,
-};
+class MyComponent extends React.Component {
+  render() {
+    let props = this.props;
 
-console.log(shape.diameter());
-console.log(shape.perimeter());
+    return (
+      <div className="my-component">
+        <a href={props.url}>{props.name}</a>
+      </div>
+    );
+  }
+}
+
 ```
 
 - A: `20` and `62.83185307179586`
@@ -101,8 +109,20 @@ There is no value `radius` on that object, which returns `NaN`.
 ###### 4. What's the output?
 
 ```javascript
-+true;
-!'Lydia';
+import AnotherClass from './AnotherClass';
+
+class MyComponent extends React.Component {
+  render() {
+    let props = this.props;
+
+    return (
+      <div className="my-component">
+        <AnotherClass {...props} />
+      </div>
+    );
+  }
+}
+
 ```
 
 - A: `1` and `false`
@@ -126,14 +146,19 @@ The string `'Lydia'` is a truthy value. What we're actually asking, is "is this 
 ###### 5. Which one is true?
 
 ```javascript
-const bird = {
-  size: 'small',
+const StatelessCmp = props => {
+  return (
+    <div className="my-stateless-component">
+      {props.name}: {props.birthday}
+    </div>
+  );
 };
 
-const mouse = {
-  name: 'Mickey',
-  small: true,
-};
+// ---
+ReactDOM.render(
+  <StatelessCmp name="Art" birthday="10/01/1980" />,
+  document.getElementById('main')
+);
 ```
 
 - A: `mouse.bird.size` is not valid
