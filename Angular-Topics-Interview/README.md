@@ -59,10 +59,10 @@ ngOnInit() {
 
 ```
 
-- A: Make sure the external variables used inside the rx operators function are const
-- B: Leverage the power of Angular components and Angular async pipe to code without asynchronousy
-- C: Let the framework terminate the Observable
-- D: Prefer assignments rather than callbacks, assign Observable rather than subscription
+- A: `Make sure the external variables used inside the rx operators function are const`
+- B: `Leverage the power of Angular components and Angular async pipe to code without asynchronousy`
+- C: `let the framework terminate the Observable`
+- D: `Prefer assignments rather than callbacks, assign Observable rather than subscription`
 
 <details><summary><b>Answer</b></summary>
 <p>
