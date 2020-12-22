@@ -1,63 +1,76 @@
 ###### 2. What's the output?
 
 ```javascript
-class MyComponent extends React.Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    return nextProps.id === this.props.id;
-  }
-}
+import {
+  mySelector
+} from "../selectors/roles-selectors.selector";
+
+  @select(mySelector)
+  arrayListFromSelector$: Observable<Role[]>;
+  arrayListFromSelector: Role[];
+
+      this.arrayListFromSelector$
+        .pipe(map(value => value))
+        .subscribe(roles => {
+          this.arrayListFromSelector = roles;
+        })
+
+
+// And then in .html template passing to the Child as below
+<some-child-component
+   [arrayListFromSelector]="arrayListFromSelector"
+><some-child-component
 ```
 
-- A: `0 1 2` and `0 1 2`
-- B: `0 1 2` and `3 3 3`
-- C: `3 3 3` and `0 1 2`
+- A: `arrayListFromSelector$ | async`
+- B: `arrayListFromSelector$ | fetch`
+- C: `arrayListFromSelector$ | pipe`
 
 <details><summary><b>Answer</b></summary>
 <p>
 
-#### Answer: C
+#### Answer: A
 
-Because of the event queue in JavaScript, the `setTimeout` callback function is called _after_ the loop has been executed. Since the variable `i` in the first loop was declared using the `var` keyword, this value was global. During the loop, we incremented the value of `i` by `1` each time, using the unary operator `++`. By the time the `setTimeout` callback function was invoked, `i` was equal to `3` in the first example.
-
-In the second loop, the variable `i` was declared using the `let` keyword: variables declared with the `let` (and `const`) keyword are block-scoped (a block is anything between `{ }`). During each iteration, `i` will have a new value, and each value is scoped inside the loop.
+This is an example of the best-practice - which is to always use async pipe when possible and only use .subscribe when side effect is an absolute necessity
+So in the below case, `arrayListFromSelector$` is comding from selector (using reselect package and which cosumes the reducer state)
+Initially I was subscribing to a selector coming from reselect/redux. And the below code was perfectly working and I was getting
+`arrayListFromSelector$` in the child component to be consumed.
 
 </p>
 </details>
 
 ---
 
-###### 3. What's the output?
+###### 3. Best practices for using observables
 
 ```javascript
-class MyComponent extends React.Component {
-  render() {
-    let props = this.props;
+ngOnInit() {
+    this.getExpenses()
+        .subscribe(expenses => {
+            this.expenses = expenses.filter(e => e.type === this.filter);
+        });
 
-    return (
-      <div className="my-component">
-        <a href={props.url}>{props.name}</a>
-      </div>
-    );
-  }
+    this.getFilter()
+        .subscribe(filter => {
+            this.filter = filter;
+            this.expenses = this.expenses.filter(e => e.type === filter);
+        });
 }
 
 ```
 
-- A: `20` and `62.83185307179586`
-- B: `20` and `NaN`
-- C: `20` and `63`
-- D: `NaN` and `63`
+- A: Make sure the external variables used inside the rx operators function are const
+- B: Leverage the power of Angular components and Angular async pipe to code without asynchronousy
+- C: Let the framework terminate the Observable
+- D: Prefer assignments rather than callbacks, assign Observable rather than subscription
 
 <details><summary><b>Answer</b></summary>
 <p>
 
-#### Answer: B
+#### Answer: D
 
-Note that the value of `diameter` is a regular function, whereas the value of `perimeter` is an arrow function.
 
-With arrow functions, the `this` keyword refers to its current surrounding scope, unlike regular functions! This means that when we call `perimeter`, it doesn't refer to the shape object, but to its surrounding scope (window for example).
-
-There is no value `radius` on that object, which returns `NaN`.
+We pass the observable around, combining it, saving it to different variables with different combination of operators but at the end, an Observable<T> is useless on its own. We need a way to “terminate” the observale and extract the type T out of it. That is what .subscribe is used for. To subscribe to the resulting stream and terminate the observable
 
 </p>
 </details>
