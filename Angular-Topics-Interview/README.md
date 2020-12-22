@@ -1,64 +1,64 @@
 
-###### 2. What's the output?
+###### 2. Which one is true about this code example 
 
 ```javascript
-for (var i = 0; i < 3; i++) {
-  setTimeout(() => console.log(i), 1);
-}
+<input type="number" class="form-control" [(ngModel)]="overRideRate" formControlName="OverRideRate">
 
-for (let i = 0; i < 3; i++) {
-  setTimeout(() => console.log(i), 1);
-}
+<input type="number" class="form-control" [ngModel]="overRideRate" formControlName="OverRideRate">
 ```
 
-- A: `0 1 2` and `0 1 2`
-- B: `0 1 2` and `3 3 3`
-- C: `3 3 3` and `0 1 2`
-
+- A: `[(ngModel)]="overRideRate"` is the short form of `[ngModel]="overRideRate" (ngModelChange)="overRideRate = $event"`
+- B: `[ngModel]="currentHero.name"` is the syntax for one-way binding
+- C:  it is a combination of `[ngModel]="currentHero.name"` and `(ngModelChange)="currentHero.name = $event"`
+- D:  `all of the above`
 <details><summary><b>Answer</b></summary>
 <p>
 
-#### Answer: C
+#### Answer: D
 
-Because of the event queue in JavaScript, the `setTimeout` callback function is called _after_ the loop has been executed. Since the variable `i` in the first loop was declared using the `var` keyword, this value was global. During the loop, we incremented the value of `i` by `1` each time, using the unary operator `++`. By the time the `setTimeout` callback function was invoked, `i` was equal to `3` in the first example.
-
-In the second loop, the variable `i` was declared using the `let` keyword: variables declared with the `let` (and `const`) keyword are block-scoped (a block is anything between `{ }`). During each iteration, `i` will have a new value, and each value is scoped inside the loop.
+`[ngModel]="overRideRate"` is to bind `overRideRate` to the `input.value`
+`(ngModelChange)="overRideRate = $event"` is to update `overRideRate` with the value of `input.value` when the `change` event was emitted.
 
 </p>
 </details>
 
 ---
 
-###### 3. What's the output?
+###### 3. Why use the async pipe ?
 
 ```javascript
-const shape = {
-  radius: 10,
-  diameter() {
-    return this.radius * 2;
-  },
-  perimeter: () => 2 * Math.PI * this.radius,
-};
-
-console.log(shape.diameter());
-console.log(shape.perimeter());
+@Component({
+    selector: "async-pipe",
+    template: `
+        <div class="card card-block">
+            <h4 class="card-title">AsyncPipe</h4>
+            <p class="card-text" ngNonBindable>{{ observable | async }}</p>
+            <p class="card-text">{{ observable | async }}</p>
+            (1)
+        </div>
+    `
+})
 ```
 
-- A: `20` and `62.83185307179586`
-- B: `20` and `NaN`
-- C: `20` and `63`
-- D: `NaN` and `63`
+- A: `Because it automatically subscribes and unsubscribes from Observables as the component gets instantiated or destroyed, which is a great feature.`
+- B: `This is especially important in the case of long-lived observables like for example certain Observables returned by the router or by AngularFire.`
+- C: `Also because it makes our programs easier to read and more declarative, with fewer state variables in our component classes`
+- D: `all of the above`
 
 <details><summary><b>Answer</b></summary>
 <p>
 
-#### Answer: B
+#### Answer: D
 
-Note that the value of `diameter` is a regular function, whereas the value of `perimeter` is an arrow function.
+Description
+The async pipe subscribes to an Observable or Promise and returns the latest value it has emitted. When a new value is emitted, the async pipe marks the component to be checked for changes. When the component gets destroyed, the async pipe unsubscribes automatically to avoid potential memory leaks.
+Normally to render the result of a promise or an observable we have to:
+- 1. Wait for a callback.
+- 2. Store the result of the callback in a variable.
+- 3. Bind to that variable in the template.
+With AsyncPipe we can use promises and observables directly in our template, without having to store the result on an intermediate property or variable.
+AsyncPipe accepts as argument an observable or a promise, calls subcribe or attaches a then handler, then waits for the asynchronous result before passing it through to the caller.
 
-With arrow functions, the `this` keyword refers to its current surrounding scope, unlike regular functions! This means that when we call `perimeter`, it doesn't refer to the shape object, but to its surrounding scope (window for example).
-
-There is no value `radius` on that object, which returns `NaN`.
 
 </p>
 </details>
@@ -90,7 +90,7 @@ The string `'Lydia'` is a truthy value. What we're actually asking, is "is this 
 
 ---
 
-###### 5. Which one is true????
+###### 5. Which one is true?
 
 ```javascript
 const bird = {
@@ -126,7 +126,7 @@ However, with dot notation, this doesn't happen. `mouse` does not have a key cal
 
 ---
 
-###### 6. What's the output???
+###### 6. What's the output?
 
 ```javascript
 let c = { greeting: 'Hey!' };
@@ -161,7 +161,7 @@ When you change one object, you change all of them.
 
 ---
 
-###### 7. What's the output??
+###### 7. What's the output?
 
 ```javascript
 let a = 3;
