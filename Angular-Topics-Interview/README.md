@@ -1,6 +1,3 @@
----
-
-
 ###### 2. What's the output?
 
 ```javascript
