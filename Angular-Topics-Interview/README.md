@@ -1,112 +1,44 @@
-###### 1. What's the output?
+
+###### 5. Which one is true>>>>
 
 ```javascript
-import {
-  mySelector
-} from "../selectors/roles-selectors.selector";
-  @select(mySelector)
-  arrayListFromSelector$: Observable<Role[]>;
-  arrayListFromSelector: Role[];
-      this.arrayListFromSelector$
-        .pipe(map(value => value))
-        .subscribe(roles => {
-          this.arrayListFromSelector = roles;
-        })
-<some-child-component
-   [arrayListFromSelector]="arrayListFromSelector"
-><some-child-component
+const StatelessCmp = props => {
+  return (
+    <div className="my-stateless-component">
+      {props.name}: {props.birthday}
+    </div>
+  );
+};
+ReactDOM.render(
+  <StatelessCmp name="Art" birthday="10/01/1980" />,
+  document.getElementById('main')
+);
 ```
 
-- A: `arrayListFromSelector$ | async`
-- B: `arrayListFromSelector$ | fetch`
-- C: `arrayListFromSelector$ | pipe`
+- A: `mouse.bird.size` is not valid
+- B: `mouse[bird.size]` is not valid
+- C: `mouse[bird["size"]]` is not valid
+- D: All of them are valid
 
 <details><summary><b>Answer</b></summary>
 <p>
 
 #### Answer: A
 
-This is an example of the best-practice - which is to always use async pipe when possible and only use .subscribe when side effect is an absolute necessity
-So in the below case, `arrayListFromSelector$` is comding from selector (using reselect package and which cosumes the reducer state)
-Initially I was subscribing to a selector coming from reselect/redux. And the below code was perfectly working and I was getting
-`arrayListFromSelector$` in the child component to be consumed.
+In JavaScript, all object keys are strings (unless it's a Symbol). Even though we might not _type_ them as strings, they are always converted into strings under the hood.
+
+JavaScript interprets (or unboxes) statements. When we use bracket notation, it sees the first opening bracket `[` and keeps going until it finds the closing bracket `]`. Only then, it will evaluate the statement.
+
+`mouse[bird.size]`: First it evaluates `bird.size`, which is `"small"`. `mouse["small"]` returns `true`
+
+However, with dot notation, this doesn't happen. `mouse` does not have a key called `bird`, which means that `mouse.bird` is `undefined`. Then, we ask for the `size` using dot notation: `mouse.bird.size`. Since `mouse.bird` is `undefined`, we're actually asking `undefined.size`. This isn't valid, and will throw an error similar to `Cannot read property "size" of undefined`.
 
 </p>
 </details>
 
 ---
 
-###### 3. Best practices for using observables
-
-```javascript
-ngOnInit() {
-    this.getExpenses()
-        .subscribe(expenses => {
-            this.expenses = expenses.filter(e => e.type === this.filter);
-        });
-    this.getFilter()
-        .subscribe(filter => {
-            this.filter = filter;
-            this.expenses = this.expenses.filter(e => e.type === filter);
-        });
-}
-
-```
-
-- A: `Make sure the external variables used inside the rx operators function are const`
-- B: `Leverage the power of Angular components and Angular async pipe to code without asynchronousy`
-- C: `let the framework terminate the Observable`
-- D: `Prefer assignments rather than callbacks, assign Observable rather than subscription`
-
-<details><summary><b>Answer</b></summary>
-<p>
-
-#### Answer: D
-
-
-We pass the observable around, combining it, saving it to different variables with different combination of operators but at the end, an Observable<T> is useless on its own. We need a way to “terminate” the observale and extract the type T out of it. That is what .subscribe is used for. To subscribe to the resulting stream and terminate the observable
-
-</p>
-</details>
-
----
-
-###### 4. What's the output?
-
-```javascript
-import AnotherClass from './AnotherClass';
-class MyComponent extends React.Component {
-  render() {
-    let props = this.props;
-    return (
-      <div className="my-component">
-        <AnotherClass {...props} />
-      </div>
-    );
-  }
-}
-
-```
-
-- A: `1` and `false`
-- B: `false` and `NaN`
-- C: `false` and `false`
-
-<details><summary><b>Answer</b></summary>
-<p>
-
-#### Answer: A
-
-The unary plus tries to convert an operand to a number. `true` is `1`, and `false` is `0`.
-
-The string `'Lydia'` is a truthy value. What we're actually asking, is "is this truthy value falsy?". This returns `false`.
-
-</p>
-</details>
-
----
-
-###### 5. Which one is true?
+###### 5. Which one is true!!!!
 
 ```javascript
 const StatelessCmp = props => {
