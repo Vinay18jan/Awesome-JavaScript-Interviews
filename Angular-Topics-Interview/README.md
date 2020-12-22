@@ -4,12 +4,9 @@
 
 ```javascript
 class MyComponent extends React.Component {
-  // when the component is added to the DOM...
   componentDidMount() {
     window.addEventListener('resize', this.onResizeHandler);
   }
-
-  // when the component is removed from the DOM...
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResizeHandler);
   }
@@ -43,7 +40,6 @@ Variables with the `let` keyword (and `const`) are hoisted, but unlike `var`, do
 
 ```javascript
 class MyComponent extends React.Component {
-  // only re-render if the ID has changed!
   shouldComponentUpdate(nextProps, nextState) {
     return nextProps.id === this.props.id;
   }
@@ -153,8 +149,6 @@ const StatelessCmp = props => {
     </div>
   );
 };
-
-// ---
 ReactDOM.render(
   <StatelessCmp name="Art" birthday="10/01/1980" />,
   document.getElementById('main')
