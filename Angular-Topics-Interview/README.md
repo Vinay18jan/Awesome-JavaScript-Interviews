@@ -4,19 +4,14 @@
 import {
   mySelector
 } from "../selectors/roles-selectors.selector";
-
   @select(mySelector)
   arrayListFromSelector$: Observable<Role[]>;
   arrayListFromSelector: Role[];
-
       this.arrayListFromSelector$
         .pipe(map(value => value))
         .subscribe(roles => {
           this.arrayListFromSelector = roles;
         })
-
-
-// And then in .html template passing to the Child as below
 <some-child-component
    [arrayListFromSelector]="arrayListFromSelector"
 ><some-child-component
@@ -49,7 +44,6 @@ ngOnInit() {
         .subscribe(expenses => {
             this.expenses = expenses.filter(e => e.type === this.filter);
         });
-
     this.getFilter()
         .subscribe(filter => {
             this.filter = filter;
@@ -81,11 +75,9 @@ We pass the observable around, combining it, saving it to different variables wi
 
 ```javascript
 import AnotherClass from './AnotherClass';
-
 class MyComponent extends React.Component {
   render() {
     let props = this.props;
-
     return (
       <div className="my-component">
         <AnotherClass {...props} />
