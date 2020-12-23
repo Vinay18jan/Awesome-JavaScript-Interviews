@@ -287,7 +287,7 @@ for (var i = 0; i < 5; i++) {
 ```
 
 - A: `5 5 5 5 5`
-- B: `SyntaxError`. You cannot add properties to a function this way.
+- B: `SyntaxError. You cannot add properties to a function this way.`
 - C: `4 4 4 4 4`
 - D: `ReferenceError`
 
