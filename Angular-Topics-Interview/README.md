@@ -1,125 +1,41 @@
 
-###### 2. Which one is true about this code example 
+###### 5.  Which of the following function of Array object returns a string representing the array and its elements?
 
 ```javascript
-<input type="number" class="form-control" [(ngModel)]="overRideRate" formControlName="OverRideRate">
+(function(){
+  var a = b = 3;
+})();
 
-<input type="number" class="form-control" [ngModel]="overRideRate" formControlName="OverRideRate">
+console.log("a defined? " + (typeof a !== 'undefined'));
+console.log("b defined? " + (typeof b !== 'undefined'));
 ```
 
-- A: `[(ngModel)]="overRideRate"` is the short form of `[ngModel]="overRideRate" (ngModelChange)="overRideRate = $event"`
-- B: `[ngModel]="currentHero.name"` is the syntax for one-way binding
-- C:  it is a combination of `[ngModel]="currentHero.name"` and `(ngModelChange)="currentHero.name = $event"`
-- D:  `all of the above`
-<details><summary><b>Answer</b></summary>
-<p>
-
-#### Answer: D
-
-`[ngModel]="overRideRate"` is to bind `overRideRate` to the `input.value`
-`(ngModelChange)="overRideRate = $event"` is to update `overRideRate` with the value of `input.value` when the `change` event was emitted.
-
-</p>
-</details>
-
----
-
-###### 3. Why use the async pipe ?
-
-```javascript
-@Component({
-    selector: "async-pipe",
-    template: `
-        <div class="card card-block">
-            <h4 class="card-title">AsyncPipe</h4>
-            <p class="card-text" ngNonBindable>{{ observable | async }}</p>
-            <p class="card-text">{{ observable | async }}</p>
-            (1)
-        </div>
-    `
-})
-```
-
-- A: `Because it automatically subscribes and unsubscribes from Observables as the component gets instantiated or destroyed, which is a great feature.`
-- B: `This is especially important in the case of long-lived observables like for example certain Observables returned by the router or by AngularFire.`
-- C: `Also because it makes our programs easier to read and more declarative, with fewer state variables in our component classes`
-- D: `all of the above`
-
-<details><summary><b>Answer</b></summary>
-<p>
-
-#### Answer: D
-
-Description
-The async pipe subscribes to an Observable or Promise and returns the latest value it has emitted. When a new value is emitted, the async pipe marks the component to be checked for changes. When the component gets destroyed, the async pipe unsubscribes automatically to avoid potential memory leaks.
-Normally to render the result of a promise or an observable we have to:
-- 1. Wait for a callback.
-- 2. Store the result of the callback in a variable.
-- 3. Bind to that variable in the template.
-With AsyncPipe we can use promises and observables directly in our template, without having to store the result on an intermediate property or variable.
-AsyncPipe accepts as argument an observable or a promise, calls subcribe or attaches a then handler, then waits for the asynchronous result before passing it through to the caller.
-
-
-</p>
-</details>
-
----
-
-###### 4. What's the output?
-
-```javascript
-+true;
-!'Lydia';
-```
-
-- A: `1` and `false`
-- B: `false` and `NaN`
-- C: `false` and `false`
+- A: `a defined? false b defined? true`
+- B: `a defined? true b defined? false`
+- C: `a defined? false b defined? false`
+- D: `a defined? true b defined? true`
 
 <details><summary><b>Answer</b></summary>
 <p>
 
 #### Answer: A
 
-The unary plus tries to convert an operand to a number. `true` is `1`, and `false` is `0`.
+Since both a and b are defined within the enclosing scope of the function, and since the line they are on begins with the var keyword, most JavaScript developers would expect typeof a and typeof b to both be undefined in the above example.
 
-The string `'Lydia'` is a truthy value. What we're actually asking, is "is this truthy value falsy?". This returns `false`.
+However, that is not the case. The issue here is that most developers incorrectly understand the statement var a = b = 3; to be shorthand for:
 
-</p>
-</details>
+var b = 3;
+var a = b;
 
----
+But in fact, var a = b = 3; is actually shorthand for:
 
-###### 5. Which one is true?
+b = 3;
+var a = b;
 
-```javascript
-const bird = {
-  size: 'small',
-};
+As a result (if you are not using strict mode), the output of the code snippet would be:
 
-const mouse = {
-  name: 'Mickey',
-  small: true,
-};
-```
-
-- A: `mouse.bird.size` is not valid
-- B: `mouse[bird.size]` is not valid
-- C: `mouse[bird["size"]]` is not valid
-- D: All of them are valid
-
-<details><summary><b>Answer</b></summary>
-<p>
-
-#### Answer: A
-
-In JavaScript, all object keys are strings (unless it's a Symbol). Even though we might not _type_ them as strings, they are always converted into strings under the hood.
-
-JavaScript interprets (or unboxes) statements. When we use bracket notation, it sees the first opening bracket `[` and keeps going until it finds the closing bracket `]`. Only then, it will evaluate the statement.
-
-`mouse[bird.size]`: First it evaluates `bird.size`, which is `"small"`. `mouse["small"]` returns `true`
-
-However, with dot notation, this doesn't happen. `mouse` does not have a key called `bird`, which means that `mouse.bird` is `undefined`. Then, we ask for the `size` using dot notation: `mouse.bird.size`. Since `mouse.bird` is `undefined`, we're actually asking `undefined.size`. This isn't valid, and will throw an error similar to `Cannot read property "size" of undefined`.
+a defined? false
+b defined? true
 
 </p>
 </details>
@@ -129,17 +45,24 @@ However, with dot notation, this doesn't happen. `mouse` does not have a key cal
 ###### 6. What's the output?
 
 ```javascript
-let c = { greeting: 'Hey!' };
-let d;
-
-d = c;
-c.greeting = 'Hello';
-console.log(d.greeting);
+function foo1()
+{
+  return {
+      bar: "hello"
+  };
+}
+function foo2()
+{
+  return
+  {
+      bar: "hello"
+  };
+}
 ```
 
-- A: `Hello`
-- B: `Hey!`
-- C: `undefined`
+- A: `Object {bar: "hello"}. undefined`
+- B: `undefined undefined`
+- C: `undefined Object {bar: "hello"}`
 - D: `ReferenceError`
 - E: `TypeError`
 
@@ -148,13 +71,13 @@ console.log(d.greeting);
 
 #### Answer: A
 
-In JavaScript, all objects interact by _reference_ when setting them equal to each other.
+Not only is this surprising, but what makes this particularly gnarly is that foo2() returns undefined without any error being thrown.
 
-First, variable `c` holds a value to an object. Later, we assign `d` with the same reference that `c` has to the object.
+The reason for this has to do with the fact that semicolons are technically optional in JavaScript (although omitting them is generally really bad form). As a result, when the line containing the return statement (with nothing else on the line) is encountered in foo2(), a semicolon is automatically inserted immediately after the return statement.
 
-<img src="https://i.imgur.com/ko5k0fs.png" width="200">
+No error is thrown since the remainder of the code is perfectly valid, even though it doesn’t ever get invoked or do anything (it is simply an unused code block that defines a property bar which is equal to the string "hello").
 
-When you change one object, you change all of them.
+This behavior also argues for following the convention of placing an opening curly brace at the end of a line in JavaScript, rather than on the beginning of a new line. As shown here, this becomes more than just a stylistic preference in JavaScript.
 
 </p>
 </details>
@@ -164,30 +87,23 @@ When you change one object, you change all of them.
 ###### 7. What's the output?
 
 ```javascript
-let a = 3;
-let b = new Number(3);
-let c = 3;
-
-console.log(a == b);
-console.log(a === b);
-console.log(b === c);
+console.log(0.1 + 0.2);
+console.log(0.1 + 0.2 == 0.3);
 ```
 
-- A: `true` `false` `true`
-- B: `false` `false` `true`
-- C: `true` `false` `false`
-- D: `false` `true` `true`
+- A: `0.30000000000000004 false`
+- B: `0.30000000000000004 true`
+- C: `0.30 true`
+- D: `0.30 true`
 
 <details><summary><b>Answer</b></summary>
 <p>
 
-#### Answer: C
+#### Answer: A
 
-`new Number()` is a built-in function constructor. Although it looks like a number, it's not really a number: it has a bunch of extra features and is an object.
+An educated answer to this question would simply be: “You can’t be sure. it might print out 0.3 and true, or it might not. Numbers in JavaScript are all treated with floating point precision, and as such, may not always yield the expected results.”
 
-When we use the `==` operator, it only checks whether it has the same _value_. They both have the value of `3`, so it returns `true`.
-
-However, when we use the `===` operator, both value _and_ type should be the same. It's not: `new Number()` is not a number, it's an **object**. Both return `false.`
+The example provided above is classic case that demonstrates this issue. Surprisingly, it will print out:
 
 </p>
 </details>
@@ -197,32 +113,29 @@ However, when we use the `===` operator, both value _and_ type should be the sam
 ###### 8. What's the output?
 
 ```javascript
-class Chameleon {
-  static colorChange(newColor) {
-    this.newColor = newColor;
-    return this.newColor;
-  }
-
-  constructor({ newColor = 'green' } = {}) {
-    this.newColor = newColor;
-  }
-}
-
-const freddie = new Chameleon({ newColor: 'purple' });
-console.log(freddie.colorChange('orange'));
+(function() {
+    console.log(1); 
+    setTimeout(function(){console.log(2)}, 1000); 
+    setTimeout(function(){console.log(3)}, 0); 
+    console.log(4);
+})();
 ```
 
-- A: `orange`
-- B: `purple`
-- C: `green`
+- A: `1 4 3 2`
+- B: `1 2 3 4`
+- C: `error`
 - D: `TypeError`
 
 <details><summary><b>Answer</b></summary>
 <p>
 
-#### Answer: D
+#### Answer: A
 
-The `colorChange` function is static. Static methods are designed to live only on the constructor in which they are created, and cannot be passed down to any children. Since `freddie` is a child, the function is not passed down, and not available on the `freddie` instance: a `TypeError` is thrown.
+The browser has an event loop which checks the event queue and processes pending events. For example, if an event happens in the background (e.g., a script onload event) while the browser is busy (e.g., processing an onclick), the event gets appended to the queue. When the onclick handler is complete, the queue is checked and the event is then handled (e.g., the onload script is executed).
+
+Similarly, setTimeout() also puts execution of its referenced function into the event queue if the browser is busy.
+
+When a value of zero is passed as the second argument to setTimeout(), it attempts to execute the specified function “as soon as possible”. Specifically, execution of the function is placed on the event queue to occur on the next timer tick. Note, though, that this is not immediate; the function is not executed until the next tick. That’s why in the above example, the call to console.log(4) occurs before the call to console.log(3) (since the call to console.log(3) is invoked via setTimeout, so it is slightly delayed).
 
 </p>
 </details>
@@ -232,23 +145,21 @@ The `colorChange` function is static. Static methods are designed to live only o
 ###### 9. What's the output?
 
 ```javascript
-let greeting;
-greetign = {}; // Typo!
-console.log(greetign);
+console.log(1 +  "2" + "2");
+console.log(1 +  +"2" + "2");
+console.log(1 +  -"1" + "2");
 ```
 
-- A: `{}`
+- A: `"122" "32" "02"`
 - B: `ReferenceError: greetign is not defined`
-- C: `undefined`
+- C: ``"122" "32" "1-12"``
+- D: `undefined`
 
 <details><summary><b>Answer</b></summary>
 <p>
 
 #### Answer: A
 
-It logs the object, because we just created an empty object on the global object! When we mistyped `greeting` as `greetign`, the JS interpreter actually saw this as `global.greetign = {}` (or `window.greetign = {}` in a browser).
-
-In order to avoid this, we can use `"use strict"`. This makes sure that you have declared a variable before setting it equal to anything.
 
 </p>
 </details>
@@ -258,16 +169,14 @@ In order to avoid this, we can use `"use strict"`. This makes sure that you have
 ###### 10. What happens when we do this?
 
 ```javascript
-function bark() {
-  console.log('Woof!');
+for (var i = 0; i < 5; i++) {
+	setTimeout(function() { console.log(i); }, i * 1000 );
 }
-
-bark.animal = 'dog';
 ```
 
-- A: Nothing, this is totally fine!
+- A: `5 5 5 5 5`
 - B: `SyntaxError`. You cannot add properties to a function this way.
-- C: `"Woof"` gets logged.
+- C: `4 4 4 4 4`
 - D: `ReferenceError`
 
 <details><summary><b>Answer</b></summary>
