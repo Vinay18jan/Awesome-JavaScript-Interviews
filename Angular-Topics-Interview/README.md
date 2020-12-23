@@ -143,6 +143,117 @@ When a value of zero is passed as the second argument to setTimeout(), it attemp
 
 ---
 
+###### 5.  Which of the following function of Array object returns a string representing the array and its elements?
+
+```javascript
+(function(){
+  var a = b = 3;
+})();
+
+console.log("a defined? " + (typeof a !== 'undefined'));
+console.log("b defined? " + (typeof b !== 'undefined'));
+```
+
+- A: `a defined? false b defined? true`
+- B: `a defined? true b defined? false`
+- C: `a defined? false b defined? false`
+- D: `a defined? true b defined? true`
+
+<details><summary><b>Answer</b></summary>
+<p>
+
+#### Answer: A
+
+Since both a and b are defined within the enclosing scope of the function, and since the line they are on begins with the var keyword, most JavaScript developers would expect typeof a and typeof b to both be undefined in the above example.
+
+However, that is not the case. The issue here is that most developers incorrectly understand the statement var a = b = 3; to be shorthand for:
+
+var b = 3;
+var a = b;
+
+But in fact, var a = b = 3; is actually shorthand for:
+
+b = 3;
+var a = b;
+
+As a result (if you are not using strict mode), the output of the code snippet would be:
+
+a defined? false
+b defined? true
+
+</p>
+</details>
+
+---
+
+###### 6. What's the output?
+
+```javascript
+function foo1()
+{
+  return {
+      bar: "hello"
+  };
+}
+function foo2()
+{
+  return
+  {
+      bar: "hello"
+  };
+}
+```
+
+- A: `Object {bar: "hello"}. undefined`
+- B: `undefined undefined`
+- C: `undefined Object {bar: "hello"}`
+- D: `ReferenceError`
+- E: `TypeError`
+
+<details><summary><b>Answer</b></summary>
+<p>
+
+#### Answer: A
+
+Not only is this surprising, but what makes this particularly gnarly is that foo2() returns undefined without any error being thrown.
+
+The reason for this has to do with the fact that semicolons are technically optional in JavaScript (although omitting them is generally really bad form). As a result, when the line containing the return statement (with nothing else on the line) is encountered in foo2(), a semicolon is automatically inserted immediately after the return statement.
+
+No error is thrown since the remainder of the code is perfectly valid, even though it doesn’t ever get invoked or do anything (it is simply an unused code block that defines a property bar which is equal to the string "hello").
+
+This behavior also argues for following the convention of placing an opening curly brace at the end of a line in JavaScript, rather than on the beginning of a new line. As shown here, this becomes more than just a stylistic preference in JavaScript.
+
+</p>
+</details>
+
+---
+
+###### 7. What's the output?
+
+```javascript
+console.log(0.1 + 0.2);
+console.log(0.1 + 0.2 == 0.3);
+```
+
+- A: `0.30000000000000004 false`
+- B: `0.30000000000000004 true`
+- C: `0.30 true`
+- D: `0.30 true`
+
+<details><summary><b>Answer</b></summary>
+<p>
+
+#### Answer: A
+
+An educated answer to this question would simply be: “You can’t be sure. it might print out 0.3 and true, or it might not. Numbers in JavaScript are all treated with floating point precision, and as such, may not always yield the expected results.”
+
+The example provided above is classic case that demonstrates this issue. Surprisingly, it will print out:
+
+</p>
+</details>
+
+---
+
 ###### 9. What's the output?
 
 ```javascript
