@@ -1,4 +1,3 @@
----
 
 ###### 5.  Which of the following function of Array object returns a string representing the array and its elements?
 
