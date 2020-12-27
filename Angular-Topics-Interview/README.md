@@ -101,12 +101,26 @@ The example provided above is classic case that demonstrates this issue. Surpris
 ###### 8. What's the output?
 
 ```javascript
-(function() {
-    console.log(1); 
-    setTimeout(function(){console.log(2)}, 1000); 
-    setTimeout(function(){console.log(3)}, 0); 
-    console.log(4);
-})();
+this.mySomeOtherSelector$
+    .pipe(
+        filter(somData => isDefinedAndNotNull(someData)),
+        mergeMap(data> {
+            this.someState = data
+            return observableCombineLatest(
+                this.selector1$,
+                this.someFunction(),
+                this.selector2$
+            );
+        })
+    )
+    .subscribe(([selector1, someFunctionResult, selector2]) => {
+        // And here I have the subscibed observer results
+        this.selector1 = selector1;
+        this.someState2 = someFunctionResult;
+        this.selector2 = selector2;
+    });
+
+}xxxxx
 ```
 
 - A: `1 4 3 2`
