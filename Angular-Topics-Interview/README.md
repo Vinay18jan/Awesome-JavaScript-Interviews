@@ -3,62 +3,34 @@
 ###### 5.  Which of the following function of Array object returns a string representing the array and its elements?
 
 ```javascript
-(function(){
-  var a = b = 3;
-})();
-
-console.log("a defined? " + (typeof a !== 'undefined'));
-console.log("b defined? " + (typeof b !== 'undefined'));
+@Component({
+	selector: "app-root",
+	templateUrl: "./app.component.html",
+	styleUrls: ["./app.component.css"],
+	encapsulation: ViewEncapsulation.None
+})
+export class AppComponent {
+	title = "parent component";
+}
 ```
 
-- A: `a defined? false b defined? true`
-- B: `a defined? true b defined? false`
-- C: `a defined? false b defined? false`
-- D: `a defined? true b defined? true`
-
-<details><summary><b>Answer</b></summary>
-<p>
-
-#### Answer: A
-
-Since both a and b are defined within the enclosing scope of the function, and since the line they are on begins with the var keyword, most JavaScript developers would expect typeof a and typeof b to both be undefined in the above example.
-
-However, that is not the case. The issue here is that most developers incorrectly understand the statement var a = b = 3; to be shorthand for:
-
-var b = 3;
-var a = b;
-
-But in fact, var a = b = 3; is actually shorthand for:
-
-b = 3;
-var a = b;
-
-As a result (if you are not using strict mode), the output of the code snippet would be:
-
-a defined? false
-b defined? true
-
-</p>
-</details>
 
 ---
 
 ###### 6. What's the output?
 
 ```javascript
-function foo1()
-{
-  return {
-      bar: "hello"
-  };
-}
-function foo2()
-{
-  return
-  {
-      bar: "hello"
-  };
-}
+    method(): Observable<boolean> {
+    if (sessionId === '')
+      return Observable.of(false);
+    }
+    return this._http.get('sessionId=' + sessionId).map(res=> {
+      if (res.status === "success") {
+        return true;
+      }
+      return false;
+    });
+  }
 ```
 
 - A: `Object {bar: "hello"}. undefined`
@@ -88,8 +60,23 @@ This behavior also argues for following the convention of placing an opening cur
 ###### 7. What's the output?
 
 ```javascript
-console.log(0.1 + 0.2);
-console.log(0.1 + 0.2 == 0.3);
+  downloadFunction() {
+    let taskId: number;
+    this.downloadSubscription = this.taskId$
+      .pipe(
+        take(1),
+        mergeMap(taskId => {
+          taskId = taskId;
+          return this.bulkImportWizardService.downloadTemplateWithIssues(
+            taskId
+          );
+        })
+      )
+      .subscribe(blob => {
+        fileSaver.saveAs(blob, `template_with_issues_${taskId}.xlsx`);
+      });
+    this.trackSubscription(this.downloadSubscription);
+  }
 ```
 
 - A: `0.30000000000000004 false`
